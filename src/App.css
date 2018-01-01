@@ -10,6 +10,20 @@
 .palette:hover {
     color: white;
 }
+label {
+    width: 100%;
+    margin: 16px 0 16px 0;
+    display: block;
+}
+label input {
+    margin: 0 0 0 32px;
+}
+label,
+label input {
+    line-height: 32px;
+    height: 32px;
+    font-size: 32px;
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

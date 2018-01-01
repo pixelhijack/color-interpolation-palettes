@@ -59,13 +59,14 @@ class App extends Component {
     render() {
         return (
             <div className='App'>
-                <input
-                    type='number'
-                    value={this.state.paletteSize}
-                    onChange={this.setSize.bind(this)}
-                />
-                <br/>
-                <hr/>
+                <label>
+                    Size of palettes:
+                    <input
+                        type='number'
+                        value={this.state.paletteSize}
+                        onChange={this.setSize.bind(this)}
+                    />
+                </label>
                 {
                     mixPalette(this.state.paletteSize).map((palette, i) => (
                         <Palette key={i} colors={palette} />

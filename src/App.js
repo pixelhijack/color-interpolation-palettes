@@ -59,8 +59,16 @@ class App extends Component {
     render() {
         return (
             <div className='App'>
+                <hgroup>
+                    <h1>
+                        Color mixing fun
+                    </h1>
+                    <h2>
+                        with 'color-interpolation' and 'nice-color-palettes' repos and a bit of FRP
+                    </h2>
+                </hgroup>
                 <label>
-                    Size of palettes:
+                    Change the size of palettes!
                     <input
                         type='number'
                         value={this.state.paletteSize}

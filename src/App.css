@@ -1,6 +1,22 @@
 .App {
   text-align: center;
-  font-family: "Gill Sans","Gill Sans MT",Calibri,sans-serif
+  font-family: "Gill Sans","Gill Sans MT",Calibri,sans-serif;
+}
+
+#fileUpload {
+    font-family: "Gill Sans","Gill Sans MT",Calibri,sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    height: 24px;
+    outline: 0;
+    display: block;
+    margin: 0 auto;
+}
+
+.canvas {
+    display: block;
+    margin: 24px auto;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .palette {

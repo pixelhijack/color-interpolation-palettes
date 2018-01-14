@@ -74,6 +74,7 @@ class Canvas extends React.Component {
         return (
             <canvas
                 ref='canvas'
+                className='canvas'
                 width={this.props.width}
                 height={this.props.height}/>
         );
@@ -95,7 +96,7 @@ const getClosestLab = (color, colors = []) => {
     return closest[0] && closest[0].color;
 };
 
-const shiftColors = (image, palette = []) => {
+const shiftColors = (image, palette = [], progressCallback) => {
     let pixels = image.data;
     for (var i = 0; i < pixels.length; i += 4) {
         const paletteRGB = palette.map(
@@ -110,10 +111,8 @@ const shiftColors = (image, palette = []) => {
         pixels[i]     = shifted[0];
         pixels[i + 1] = shifted[1];
         pixels[i + 2] = shifted[2];
-        if(Number.isInteger((i / pixels.length) * 100)){
-            //console.clear();
-            console.log('Processing... %s%', (i / pixels.length) * 100);
-        }
+        const progress = (i / pixels.length) * 100;
+        progressCallback(progress);
     }
     console.timeEnd('Processed in');
     return image;
@@ -124,8 +123,9 @@ class App extends Component {
         super(props);
         this.state = {
             paletteSize: 5,
-            canvasWidth: 10,
-            canvasHeight: 10,
+            canvasWidth: 0,
+            canvasHeight: 0,
+            imageData: undefined,
             selectedPalette: [
                 'rgb(221,114,78)',
                 'rgb(202,61,66)',
@@ -142,6 +142,16 @@ class App extends Component {
         this.setState({
             selectedPalette: palette
         });
+        this.recolorImage();
+    }
+    recolorImage() {
+        if(!this.state.imageData) { return; }
+        const manipulated = shiftColors(
+            this.state.imageData,
+            this.state.selectedPalette
+        );
+        ctx.clearRect(0,0,this.state.canvasWidth,this.state.canvasHeight);
+        ctx.putImageData(manipulated, 0, 0);
     }
     onFileUpload(file) {
         const reader = new FileReader();
@@ -151,12 +161,19 @@ class App extends Component {
             image.onload = function(){
                 this.setState({
                     canvasWidth: image.width,
-                    canvasHeight: image.height
+                    canvasHeight: image.height,
+                    imageData: ctx.getImageData(0,0,image.width,image.height)
                 });
                 ctx.drawImage(image, 0, 0);
                 const manipulated = shiftColors(
                     ctx.getImageData(0,0,this.state.canvasWidth,this.state.canvasHeight),
-                    this.state.selectedPalette
+                    this.state.selectedPalette,
+                    (progress) => {
+                        if(Number.isInteger(progress)){
+                            //console.clear();
+                            console.log('Processing... %s%', progress);
+                        }
+                    }
                 );
                 ctx.putImageData(manipulated, 0, 0);
             }.bind(this);
